@@ -1,0 +1,104 @@
+{
+  "startLocation": "campEntrance",
+  "darkAreas": ["ancientRuins"],
+  "locations": [
+    {
+      "id": "campEntrance",
+      "title": "Camp Entrance",
+      "description": "You stand at the entrance of a dark, creepy forest. A beaten path leads deeper north.",
+      "exits": [
+        { "label": "Go deeper into forest", "target": "forestClearing", "locked": false }
+      ],
+      "interactive": null
+    },
+    {
+      "id": "forestClearing",
+      "title": "Forest Clearing",
+      "description": "A damp clearing with moss-covered stones. Paths lead back to the entrance and to other areas.",
+      "exits": [
+        { "label": "Return to camp entrance", "target": "campEntrance", "locked": false },
+        { "label": "Approach the old hut", "target": "radioHut", "locked": false },
+        { "label": "Enter the lever puzzle area", "target": "leverRoom", "locked": false },
+        { "label": "Proceed to the gate room", "target": "gateRoom", "locked": true }
+      ],
+      "interactive": null
+    },
+    {
+      "id": "radioHut",
+      "title": "Radio Hut",
+      "description": "An abandoned wooden shack with a dusty radio you can tinker with.",
+      "exits": [
+        { "label": "Go back to clearing", "target": "forestClearing", "locked": false }
+      ],
+      "interactive": {
+        "type": "radio",
+        "messages": [
+          "Static...",
+          "Help me... they're watching...",
+          "The Looping is close..."
+        ]
+      }
+    },
+    {
+      "id": "leverRoom",
+      "title": "Lever Puzzle Room",
+      "description": "A circle of rusty levers stands here, each labeled A and B.",
+      "exits": [
+        { "label": "Return to clearing", "target": "forestClearing", "locked": false },
+        { "label": "Open the gate", "target": "gateRoom", "locked": true }
+      ],
+      "puzzle": {
+        "type": "logicGate",
+        "levers": ["leverA", "leverB"],
+        "expression": "leverA && !leverB",
+        "unlock": { "location": "leverRoom", "exitLabel": "Open the gate" }
+      }
+    },
+    {
+      "id": "gateRoom",
+      "title": "Gate Room",
+      "description": "A massive iron gate blocks your escape. It needs something to open.",
+      "exits": [
+        { "label": "Escape!", "target": "ending", "locked": true },
+        { "label": "Back to clearing", "target": "forestClearing", "locked": false }
+      ],
+      "interactive": null
+    },
+    {
+      "id": "ending",
+      "title": "Escape",
+      "description": "You slip through the gate just as the Looping arrives. You are free—for now.",
+      "exits": []
+    }
+  ],
+  "items": [
+    {
+      "id": "lantern",
+      "type": "lamp",
+      "label": "Rusty Lantern",
+      "description": "An old lantern—might help see in the dark.",
+      "initialLocation": "campEntrance"
+    },
+    {
+      "id": "mysteriousBook",
+      "type": "readable",
+      "label": "Mysterious Book",
+      "description": "A damp tome filled with cryptic inscriptions.",
+      "initialLocation": "radioHut"
+    },
+    {
+      "id": "leverKey",
+      "type": "key",
+      "label": "Rusty Lever Key",
+      "description": "A key that fits a mechanism in the gate room.",
+      "initialLocation": "forestClearing"
+    }
+  ],
+  "lockAndKey": [
+    {
+      "keyId": "leverKey",
+      "keyLocation": "forestClearing",
+      "unlock": { "location": "gateRoom", "exitLabel": "Escape!" }
+    }
+  ]
+}
